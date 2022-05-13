@@ -1,0 +1,87 @@
+###
+# docker-compose file for feedstock-to-function.lbl.gov
+# production site using JBEI nginx Docker image.
+###
+
+version: "3.6"
+
+volumes:
+  # The tlsdata definition here is used by the nginx and
+  # letsencrypt services later in file
+  nginx_certs: {}
+  nginx_confd: {}
+  nginx_vhost: {}
+  nginx_webroot: {}
+  staticfiles: {}
+
+services:
+  ftf-django-web:
+    build:
+      context: .
+    container_name: ftf_django_web
+    volumes:
+      - type: bind
+        source: .
+        target: /ftf_django
+    ports:
+      - "9000:9000"
+    command:
+      bash -c
+      "python3 manage.py makemigrations --merge --noinput
+      && python3 manage.py migrate
+      && python3 manage.py collectstatic --noinput
+      && gunicorn ftf_web.wsgi -b 0.0.0.0:9000 -t 120"
+    environment:
+      PYTHONUNBUFFERED: 1
+      VIRTUAL_HOST: "feedstock-to-function.ese.lbl.gov"
+      VIRTUAL_PORT: "9000"
+      LETSENCRYPT_HOST: "feedstock-to-function.ese.lbl.gov"
+      LETSENCRYPT_EMAIL: "jbei-informatics@lbl.gov"
+
+  nginx:
+    image: jbei/nginx:mainline
+#    restart: always
+#    labels:
+#      - com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy=true
+    volumes:
+      - nginx_confd:/etc/nginx/conf.d
+      - nginx_vhost:/etc/nginx/vhost.d
+      - nginx_webroot:/usr/share/nginx/html
+      - /var/lib/docker/volumes/ftf-django_nginx_certs/_data:/etc/nginx/certs:ro
+      - staticfiles:/var/www/static
+      - /usr/local/ftf-django/docker/docker-gen/proxy.conf:/etc/nginx/proxy.conf:ro
+      - /usr/local/ftf-django/docker-gen/vhost.d/feedstock-to-function.lbl.gov:/etc/nginx/vhost.d/feedstock-to-function.lbl.gov:ro
+      - /usr/local/ftf-django/docker-gen/vhost.d/feedstock-to-function.ese.lbl.gov:/etc/nginx/vhost.d/feedstock-to-function.ese.lbl.gov:ro
+    ports:
+      - "80:80"
+      - "443:443"
+#      depends_on:
+#        - "nginx-gen"
+  nginx-gen:
+    image: jbei/nginx-gen:latest
+    #    restart: always
+#    labels:
+#      - com.github.jrcs.letsencrypt_nginx_proxy_companion.docker_gen=true
+    volumes:
+      - nginx_confd:/etc/nginx/conf.d
+      - nginx_vhost:/etc/nginx/vhost.d
+      - nginx_webroot:/usr/share/nginx/html
+      - /var/lib/docker/volumes/ftf-django_nginx_certs/_data:/etc/nginx/certs:ro
+      - staticfiles:/var/www/static
+      - /usr/local/ftf-django/docker/docker-gen/proxy.conf:/etc/nginx/proxy.conf:ro
+      - /usr/local/ftf-django/docker-gen/vhost.d/feedstock-to-function.lbl.gov:/etc/nginx/vhost.d/feedstock-to-function.lbl.gov:ro
+      - /usr/local/ftf-django/docker-gen/vhost.d/feedstock-to-function.ese.lbl.gov:/etc/nginx/vhost.d/feedstock-to-function.ese.lbl.gov:ro
+#    depends_on:
+#      - "nginx-gen"
+#      - "nginx"
+#  letsencrypt:
+#    image: jrcs/letsencrypt-nginx-proxy-companion
+#    depends_on:
+#      - "nginx"
+#    #      - "nginx-gen"
+#    volumes:
+#      - nginx_confd:/etc/nginx/conf.d
+#      - nginx_vhost:/etc/nginx/vhost.d
+#      - nginx_webroot:/usr/share/nginx/html
+#      - nginx_certs:/etc/nginx/certs:rw
+#      - /var/run/docker.sock:/var/run/docker.sock:ro

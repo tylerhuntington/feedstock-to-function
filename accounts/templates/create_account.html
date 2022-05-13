@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'accounts/stylesheets/styles.css' %}">
+{% endblock %}
+
+{% block content %}
+
+    <div class="d-flex align-items-center justify-content-center"
+         style="margin-top: 4%;">
+        <div class="card" style="width: 27rem;">
+            <div class="card-header" style="font-size:16px">
+                Create New Account:
+            </div>
+            <div class="card-body">
+                {% crispy form %}
+
+                <input type="hidden" name="next" value="{{ next }}"/>
+                {#                    TODO#}
+                {# Assumes you setup the password_reset view in your URLconf #}
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- EULA Modal -->
+    <div class="modal fade" id="terms-modal" tabindex="-1" role="dialog"
+         aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">
+                        <strong>
+                            LBNL End User License Agreement for Non-Commercial Research Use
+                        </strong>
+
+                    </h5>
+                </div>
+                <div class="modal-body">
+                    <div id="eula-content"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary"
+                            id="eula-modal-agree-btn"
+                            data-dismiss="modal"
+                    >
+                        I agree
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% block javascript %}
+        <script
+  src="https://code.jquery.com/jquery-3.4.1.js"
+  integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+  crossorigin="anonymous"></script>
+
+        <script type="text/javascript">
+            // load the EULA content
+            $('#id_eula_accepted').on('click', function () {
+                $('#eula-content').load("{% static 'accounts/eula.html' %}")
+                $('#terms-modal').modal('show');
+              }
+            )
+        </script>
+    {% endblock %}
+{% endblock %}
+

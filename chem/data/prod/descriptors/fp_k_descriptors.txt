@@ -1,0 +1,1 @@
+'VE2_A', 'BCUTc-1l', 'BCUTdv-1l', 'BCUTd-1h', 'BCUTi-1h', 'PPSA1', 'FPSA3', 'RPCG', 'RNCS', 'MZ', 'AETA_alpha', 'nHBDon', 'CIC2', 'Mor30', 'Mor20m', 'Mor26m', 'Mor30m', 'Mor09v', 'Mor10v', 'Mor11v', 'Mor13v', 'Mor18v', 'Mor28v', 'Mor27se', 'Mor04p', 'EState_VSA1', 'EState_VSA2', 'EState_VSA9', 'SdssC', 'MID_O', 'TpiPC10'

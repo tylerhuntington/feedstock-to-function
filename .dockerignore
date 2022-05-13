@@ -1,0 +1,8 @@
+**/node_modules
+jbei_lead_file_store
+db.json
+db_utils
+scripts
+**/package-lock.json
+staticfiles
+moleculelookup

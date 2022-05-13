@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{%  load static %}
+{% load crispy_forms_tags %}
+{% load socialaccount %}
+
+{% block head %}
+{#  <link rel="stylesheet" href="{% static 'accounts/stylesheets/styles.css' %}">#}
+{% endblock %}
+
+{% block content %}
+
+    {% if next %}
+        {% if user.is_authenticated %}
+            <p>Your account doesn't have access to this page. To proceed,
+                please login with an account that has access.</p>
+        {% else %}
+          <div class="d-flex justify-content-center my-0">
+            <div class="alert alert-danger d-flex justify-content-center
+               top-banner-alert my-0"
+                 role="alert"
+            >
+              <p class="alert-banner-msg mb-0">Please sign in or register to
+                access this page.</p>
+            </div>
+          </div>
+        {% endif %}
+    {% endif %}
+    <div class="d-flex align-items-center justify-content-center info-card-cont">
+        <div class="card mt-5" style="width: 27rem;">
+            <div class="card-header" style="font-size:16px">
+                Sign in:
+            </div>
+            <div class="card-body">
+                {% crispy form %}
+
+                <input type="hidden" name="next" value="{{ next }}"/>
+                {#                    TODO#}
+              <div style="margin-bottom: 15px; margin-left: -3px">
+
+              <a href={% provider_login_url 'google' %}
+              >
+                <img height="42px"
+                     src="{% static 'accounts/img/google_login_btn.png' %}">
+              </a>
+              </div>
+              <div>
+
+                    <a href="{% url 'password_reset' %}">
+                        Forgot password?
+                    </a>
+              </div>
+              <div>
+
+                    <a href="{% url 'accounts:create_account' %}">
+                        Create account
+                    </a>
+              </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+

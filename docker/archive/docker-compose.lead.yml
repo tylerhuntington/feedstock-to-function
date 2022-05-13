@@ -1,0 +1,37 @@
+###
+# docker-compose file for deploying F2F property prediction tool app to
+# lead.jbei.org server at URL: https://feedstock-to-function.lbl.gov/
+###
+version: "3.6"
+
+services:
+  web-ftf-django:
+    container_name: web_ftf_django
+    build:
+        context: .
+    volumes:
+      - type: bind
+        source: .
+        target: /ftf_django
+    ports:
+        - "9000:9000"
+    command:
+        bash -c
+        "python3 manage.py makemigrations --merge --noinput
+        && python3 manage.py migrate
+        && python3 manage.py collectstatic --noinput
+        && gunicorn ftf_web.wsgi -b 0.0.0.0:9000 -t 120"
+
+    environment:
+      PYTHONUNBUFFERED: 1
+      VIRTUAL_HOST: "feedstock-to-function.lbl.gov"
+      # the below should be whichever port the flask app container is EXPOSE-ing
+      VIRTUAL_PORT: "9000"
+      LETSENCRYPT_HOST: "feedstock-to-function.lbl.gov"
+      LETSENCRYPT_EMAIL: "jbei-informatics@lbl.gov"
+
+networks:
+  default:
+    external:
+      name: jbei-lead-django_default
+

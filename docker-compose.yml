@@ -1,0 +1,97 @@
+###
+# docker-compose file for feedstock-to-function.lbl.gov
+# production site using JBEI nginx Docker image.
+###
+
+version: "3.6"
+
+volumes:
+  # The tlsdata definition here is used by the nginx and
+  # letsencrypt services later in file
+  nginx_certs: {}
+  nginx_confd: {}
+  nginx_vhost: {}
+  nginx_webroot: {}
+  staticfiles: {}
+  acme: {}
+  html: {}
+  dhparam: {}
+
+services:
+  ftf-django-web:
+    build:
+      context: .
+    container_name: ftf_django_web
+    volumes:
+      - type: bind
+        source: .
+        target: /ftf_django
+    ports:
+      - "9000:9000"
+    command:
+      bash -c
+      "python3 manage.py migrate
+      && python3 manage.py collectstatic --noinput
+      && python3 manage.py loaddata accounts/init_fixtures/sites.json
+      && python3 manage.py autocreatesuperuser
+      && gunicorn ftf_web.wsgi -b 0.0.0.0:9000 -t 120"
+    environment:
+      PYTHONUNBUFFERED: 1
+      VIRTUAL_HOST: "feedstock-to-function.lbl.gov"
+      VIRTUAL_PORT: "9000"
+      LETSENCRYPT_HOST: "feedstock-to-function.lbl.gov"
+      LETSENCRYPT_EMAIL: "jbei-informatics@lbl.gov"
+
+  nginx:
+    image: jbei/nginx:mainline
+    restart: always
+    labels:
+      - com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy=true
+    volumes:
+      - nginx_confd:/etc/nginx/conf.d
+      - nginx_vhost:/etc/nginx/vhost.d
+      - nginx_webroot:/usr/share/nginx/html
+      - nginx_certs:/etc/nginx/certs:ro
+      - staticfiles:/var/www/static
+    ports:
+      - "80:80"
+      - "443:443"
+  nginx-gen:
+    image: jbei/nginx-gen:latest
+    restart: always
+    labels:
+      - com.github.jrcs.letsencrypt_nginx_proxy_companion.docker_gen=true
+    volumes:
+      - nginx_confd:/etc/nginx/conf.d
+      - nginx_vhost:/etc/nginx/vhost.d
+      - nginx_webroot:/usr/share/nginx/html
+      - nginx_certs:/etc/nginx/certs:ro
+      - staticfiles:/var/www/static
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+  letsencrypt:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    depends_on:
+      - "nginx-gen"
+      - "nginx"
+    volumes:
+      - nginx_confd:/etc/nginx/conf.d
+      - nginx_vhost:/etc/nginx/vhost.d
+      - nginx_webroot:/usr/share/nginx/html
+      - nginx_certs:/etc/nginx/certs:rw
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+  acme-companion:
+    image: nginxproxy/acme-companion
+    container_name: nginx-proxy-acme
+    depends_on:
+      - "nginx-gen"
+      - "nginx"
+    volumes:
+      - nginx_certs:/etc/nginx/certs:rw
+      - acme:/etc/acme.sh
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - html:/usr/share/nginx/html
+      - dhparam:/etc/nginx/dhparam
+    environment:
+      ACME_CA_URI: "https://acme-staging-v02.api.letsencrypt.org/directory"
+      LETSENCRYPT_TEST: 'true'
+      DEBUG: 1

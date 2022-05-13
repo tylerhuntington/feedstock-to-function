@@ -1,0 +1,468 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% load static %}
+
+{% block content %}
+  <ul class="nav nav-pills mb-3 center-pills justify-content-center"
+      id="pills-tab" role="tablist">
+    <li class="nav-item">
+      <a class="nav-link active" id="pills-team-tab" data-toggle="pill"
+         href="#OurTeam" role="tab" aria-controls="pills-team"
+         aria-selected="true">Our Team</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="pills-dbstats-tab" data-toggle="pill"
+         href="#DatabaseStatistics" role="tab" aria-controls="pills-dbstats"
+         aria-selected="true">Database Statistics</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="pills-contrib-tab" data-toggle="pill"
+         href="#ContributeData" role="tab" aria-controls="pills-contrib"
+         aria-selected="false">Contribute Data</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="pills-docs-tab" data-toggle="pill"
+         href="#Documentation" role="tab" aria-controls="pills-docs"
+         aria-selected="false">
+        Documentation
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="pills-api-tab" data-toggle="pill"
+         href="#API" role="tab" aria-controls="pills-api"
+         aria-selected="false">
+        API
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="pills-acknowl-tab" data-toggle="pill"
+         href="#Acknowledgements" role="tab" aria-controls="pills-acknowl"
+         aria-selected="false">
+        Acknowledgements
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="pills-disclaim-tab" data-toggle="pill"
+         href="#Disclaimers" role="tab" aria-controls="pills-disclaim"
+         aria-selected="false">
+        Disclaimers
+      </a>
+    </li>
+  </ul>
+  <hr class="my-4">
+  <div class="tab-content" id="pills-tabContent">
+    <div class="tab-pane fade show active" id="OurTeam" role="tabpanel">
+      <div class="d-flex flex-wrap justify-content-around">
+        <img src="{% static 'about/img/team.png' %}" height="400">
+      </div>
+    </div>
+    <div class="tab-pane fade" id="DatabaseStatistics" role="tabpanel">
+      <h4 class="text-center">Chemical Properties Data</h4>
+      <div class="d-flex flex-wrap justify-content-around text-center">
+        {% with prop="Boiling Point" %}
+          {% with exp_vals=bp_exp pred_vals=bp_pred err=bp_pred_perc_err %}
+            {% include 'dbstat_prop_card.html' %}
+          {% endwith %}
+        {% endwith %}
+        {% with prop="Melting Point" %}
+          {% with exp_vals=mp_exp pred_vals=mp_pred err=mp_pred_perc_err %}
+            {% include 'dbstat_prop_card.html' %}
+          {% endwith %}
+        {% endwith %}
+        {% with prop="Flash Point" %}
+          {% with exp_vals=fp_exp pred_vals=fp_pred err=fp_pred_perc_err %}
+            {% include 'dbstat_prop_card.html' %}
+          {% endwith %}
+        {% endwith %}
+        {% with prop="Cetane Number" %}
+          {% with exp_vals=cn_exp pred_vals=cn_pred err=cn_pred_perc_err %}
+            {% include 'dbstat_prop_card.html' %}
+          {% endwith %}
+        {% endwith %}
+        {% with prop="Derived Cetane Number" %}
+          {% with exp_vals=dcn_exp pred_vals=dcn_pred err=dcn_pred_perc_err %}
+            {% include 'dbstat_prop_card.html' %}
+          {% endwith %}
+        {% endwith %}
+        {% with prop="Yield Sooting Index" %}
+          {% with exp_vals=ysi_exp pred_vals=ysi_pred err=ysi_pred_perc_err %}
+            {% include 'dbstat_prop_card.html' %}
+          {% endwith %}
+        {% endwith %}
+      </div>
+    </div>
+    <div class="tab-pane fade" id="ContributeData" role="tabpanel">
+      <div class="container">
+        <h3 class="text-center">
+          We are currently accepting user-contributed data:
+        </h3>
+        <div class="d-flex flex-wrap justify-content-center my-5">
+          <a class="btn btn-outline-secondary btn-lg mx-3"
+             href="{% url 'chem:submit_chem' %}"
+          >
+            Contribute Neat Molecule Data
+          </a>
+          <a class="btn btn-outline-secondary btn-lg mx-3"
+             href="{% url 'chem:submit_blend' %}"
+          >
+            Contribute Blend Data
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="tab-pane fade" id="API" role="tabpanel"
+         style="height:6200px;"
+    >
+      <div class="container">
+        <iframe src="https://feedstock-to-function.github.io/ftf-docs/user-guide/rest-api/"
+                frameborder="0"
+                style="height:7150px;"
+        >
+        </iframe>
+        {#        <div class="d-flex flex-wrap justify-content-center mt-1">#}
+        {#          <a class="btn btn-outline-secondary btn-lg mx-3"#}
+        {#             href="https://feedstock-to-function.github.io/ftf-docs/user-guide/rest-api/"#}
+        {#          >#}
+        {#            Go to API Documentation Site#}
+        {#          </a>#}
+        {#        </div>#}
+      </div>
+    </div>
+    <div class="tab-pane fade" id="Documentation" role="tabpanel">
+      <div class="container">
+        <iframe src="https://feedstock-to-function.github.io/ftf-docs/"
+                frameborder="0"
+                style="height:800px;"
+        >
+        </iframe>
+        <div class="d-flex flex-wrap justify-content-center mt-1">
+          <a class="btn btn-outline-secondary btn-lg mx-3"
+             href="https://feedstock-to-function.github.io/ftf-docs/"
+          >
+            Go to Full Documentation Site
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="tab-pane fade" id="Acknowledgements" role="tabpanel">
+      <div class="container">
+        <h4 class="text-center my-4">
+          Acknowledgements
+        </h4>
+        <p>
+          This work was supported by the Bioenergy Technologies Office of
+          the U.S. Department of Energy under Contract No. DE-AC02-05CH11231.
+        </p>
+        <p>
+          Portions of these results used high performance computing resources
+          located at the Oak Ridge National Laboratory and provided by the
+          Bioenergy Technologies Office of the U.S. Department of Energy.
+        </p>
+        <p>
+          We would also like to acknowledge the following collaborators for
+          their contributions to this project:
+        </p>
+        <ul>
+          <li>
+            Josh Heyne, University of Dayton
+          </li>
+          <li>
+            Tonghun Lee, University of Illinois
+          </li>
+          <li>
+            Ben Harvey, Naval Air Warfare Center Weapons Division
+          </li>
+          <li>
+            Charles Finney, Oak Ridge National Laboratory
+          </li>
+        </ul>
+
+      </div>
+    </div>
+    <div class="tab-pane fade" id="Disclaimers" role="tabpanel">
+      <div class="container">
+        <div class="d-flex flex-wrap justify-content-center text-center my-4">
+          <h4>Disclaimers</h4>
+        </div>
+        <p>Please take a moment to familiarize yourself with this page, as
+          your use of all Berkeley Lab (LBNL) websites, services, networks,
+          and systems is subject to these policies and terms of service.
+        </p>
+        <h5><strong>Privacy and Security</strong></h5>
+        <p>This web site and this computer system (and all similarly situated
+          systems*) are created, managed, and operated by the University of
+          California to enable our work under the Lawrence Berkeley National
+          Laboratory Prime Contract for the Department of Energy.&nbsp;&nbsp;The
+          University of California is responsible for the management of these
+          systems, and many of these systems are owned by the US
+          Government. </p>
+        <p><strong><u>Users (authorized or unauthorized) have no explicit or
+          implicit expectation of privacy</u></strong>. Any or all uses of
+          this system, associated connected systems and all files may be
+          intercepted, monitored, recorded, copied, audited, inspected, and
+          disclosed to authorized University and law enforcement personnel. By
+          using this system, the user consents to such interception,
+          monitoring, recording, copying, auditing, inspection, and disclosure
+          at the discretion of authorized site personnel. Unauthorized or
+          improper use of this system may result in administrative
+          disciplinary action and civil and criminal penalties.&nbsp;By
+          accessing our website, interacting with any of our systems, or
+          operating your own system on one of our networks, you are expressly
+          consenting to these monitoring activities and to abide by LBNL
+          Policies and applicable State of California, University of
+          California, and Federal Law.&nbsp; Some Berkeley Lab services are
+          provided by third party providers.&nbsp; Where applicable, you agree
+          to monitoring by both Berkeley Lab and the third party provider.
+        </p>
+        <p> Unauthorized attempts to defeat or circumvent security features,
+          to use the system for other than intended purposes, to deny service
+          to authorized users, to access, obtain, alter, damage, or destroy
+          information, or otherwise to interfere with the system or its
+          operation are prohibited. Evidence of such acts may be disclosed to
+          law enforcement authorities and result in criminal prosecution under
+          the Computer Fraud and Abuse Act of 1986 (Pub. L. 99-474) and the
+          National Information Infrastructure Protection Act of 1996 (Pub. L.
+          104-294), (18 U.S.C. 1030), or other applicable state, federal, and
+          international criminal laws.&nbsp;</p>
+        <p> Email is not a private form of communication and email traffic to
+          and from LBL is logged.&nbsp;&nbsp;It is also possible that email
+          you send to an LBL address (for instance a mailing list), could be
+          automatically posted in a publicly accessible way.&nbsp;&nbsp;Email
+          which transits LBL networks, unless it is encrypted, is also
+          monitored for computer security purposes. &nbsp;By sending email to
+          an LBL address, you consent to such monitoring. </p>
+        <p> It is against LBNL policy to transmit Protected Information, such
+          as Personally Identifiable Information (Social Security Numbers,
+          Financial Account Numbers, Personally Identifiable Health
+          Information) via insecure means (such as email).&nbsp;&nbsp;Do not
+          transmit this information to us except via applications approved for
+          this purpose.&nbsp; Contact privacy at lbl.gov for any
+          questions. </p>
+        <p> Unless explicitly noted otherwise, the systems you are accessing
+          have a FIPS 199 rating of Low/Low/Low.&nbsp; LBL systems, excluding
+          certain business systems, are designed to provide protection to
+          confidentiality, integrity, and availability at a level in keeping
+          with our fundamental research mission and as befits open research
+          and educational institutions.&nbsp; Information requiring higher
+          protection then is afforded by these controls is not permitted
+          without approval per RPM 9.01.&nbsp; When you operate your system on
+          this network, or share content with LBL employees, you agree that
+          this level of control is acceptable to you.&nbsp; Classified
+          information of any kind is never permitted at Berkeley Lab. </p>
+        <h5><strong>Information Collected for Tracking and
+          Optimization</strong></h5>
+        <p>Berkeley Lab utilizes web measurement technology provided by Google
+          Analytics. The information collected is used to optimize our
+          website; helping us determine top tasks, improve our user interface
+          and diversify our content offerings to meet the needs of our
+          visitors. This website also uses the third-party DoubleClick cookie
+          for Google Demographic and Interests reports to gather anonymous
+          summary demographic information about website visitors such as
+          gender, age range, and areas of interest for adults over the age of
+          18.
+          (<a href="https://support.google.com/analytics/answer/2799357?hl=en"
+              target="_blank" rel="noopener noreferrer">About Google
+            Demographics and Interests</a>)</p>
+        <p>The information that is collected is only retained for as long as
+          is needed for proper analysis and optimization of our websites, is
+          not used to identify or track specific individuals, and is
+          accessible only to Berkeley Lab employees whose position
+          necessitates it.</p>
+        <p>You can prevent your information from being collected and used by
+          Google Analytics by installing the <a
+                  href="https://tools.google.com/dlpage/gaoptout/"
+                  target="_blank" rel="noopener noreferrer">Google Analytics
+            Opt-out Browser Add-on</a>. Berkeley Lab does not endorse and
+          makes no representation about the effectiveness of the Google
+          Analytics Opt-out Browser Add-on. Opting-out in no way affects your
+          access to content or how you see our websites.</p>
+        <h5><strong>Copyright</strong></h5>
+        <p> Materials on our websites not specifically noted otherwise are
+          &copy; in the current year and/or the year of their creation The
+          Regents of the University of California.&nbsp; Requests to
+          reproduce, modify, or distribute materials on our websites should be
+          directed to the page owner.&nbsp; The Regents of the University of
+          California reserve all rights to these materials unless a different
+          license is explicitly designated. </p>
+        <p> Because of the nature of our contract, the US Government is
+          granted for itself and others acting on its behalf a paid-up,
+          nonexclusive, irrevocable worldwide license in these documents to
+          reproduce, prepare derivative works, and perform publicly and
+          display publicly by or on behalf of the Government for all
+          information produced under the Prime Contract, subject to its
+          provisions.</p>
+        <p>For requests to reproduce LBL information, materials, or images,
+          please click <a href="http://go.lbl.gov/copyright-requests">here</a>.
+        </p>
+        <p> If you assert ownership over any materials found on LBL websites
+          or systems and wish for them to be removed or modified, or if you
+          wish to file a DMCA complaint or takedown notice, please contact
+          security at lbl.gov.&nbsp;&nbsp;Under the DMCA, the University is
+          required to name a DMCA agent.&nbsp;&nbsp;Contact information for
+          our agent is available <a
+                  href="https://www.lbl.gov/cgi-bin/ds/ds.cgi?peopleName=adstone">here</a>.
+        </p>
+        <p>When you contribute materials to LBL, for instance, by posting to a
+          publicly accessible mailing list or by adding material to a wiki,
+          you grant the University of California an irrevocable license to
+          display and modify the content. </p>
+        <h5><strong>Disclaimer</strong></h5>
+        <p> This website and related content were prepared as an account of or
+          to expedite work sponsored at least in part by the United States
+          Government. While we strive to provide correct information, neither
+          the United States Government nor any agency thereof, nor The Regents
+          of the University of California, nor any of their employees, makes
+          any warranty, express or implied, or assumes any legal
+          responsibility for the accuracy, completeness, or usefulness of any
+          information, apparatus, product, or process disclosed, or represents
+          that its use would not infringe privately owned rights. </p>
+        <p> Reference herein to any specific commercial product, process, or
+          service by its trade name, trademark, manufacturer, or otherwise,
+          does not necessarily constitute or imply its endorsement,
+          recommendation, or favoring by the United States Government or any
+          agency thereof, or The Regents of the University of California.&nbsp;
+          Use of the Laboratory or University&rsquo;s name for endorsements is
+          prohibited. </p>
+        <p> The views and opinions of authors expressed herein do not
+          necessarily state or reflect those of the United States Government
+          or any agency thereof or The Regents of the University of
+          California.&nbsp; Neither Berkeley Lab nor its employees are agents
+          of the US Government. </p>
+        <p> Berkeley Lab web pages link to many other websites.&nbsp; Such
+          links do not constitute an endorsement of the content or company and
+          we are not responsible for the content of such links. </p>
+        <h5><strong>Accessibility</strong></h5>
+        <p> The University of California and Lawrence Berkeley National
+          Laboratory endeavor to make information available to all interested
+          parties.&nbsp;&nbsp;We attempt to maintain the primary LBL website,
+          and other sources of information intended for the general public, in
+          a manner that meets generally agreed upon accessibility criteria.&nbsp;&nbsp;Other
+          information, such as bulk data and automatically generated content,
+          may not always be accessible using existing assistive technology.&nbsp;&nbsp;If
+          you encounter information which you cannot access with assistive
+          technology, please contact us at help at lbl.gov and we will work
+          with you to see if such information can be provided in an
+          appropriate way. </p>
+        <h5><strong>Open Source Software at the Lab</strong></h5>
+        <p>Berkeley Lab is managed by The Regents of the University of
+          California (&ldquo;The Regents&rdquo;) under a contract between U.S.
+          Department of Energy (&ldquo;DOE&rdquo;) and The Regents. By virtue
+          of the University of California&rsquo;s (&ldquo;UC&rdquo;)
+          systemwide intellectual property policies as well as delegations of
+          authority starting from The Regents to the UC President (e.g., The
+          Regents&rsquo; Standing Order 100.4), Berkeley Lab is authorized to
+          grant licenses or transfer its rights in intellectual property (&ldquo;IP&rdquo;)
+          owned by The Regents, but only to the extent that such IP rights are
+          within the control and jurisdiction of Berkeley Lab and subject to
+          DOE regulations. </p>
+        <p>Therefore, Berkeley Lab may not grant licenses or otherwise
+          encumber any patents, copyrights, or trademarks created at and under
+          the control and jurisdiction of another UC campus (and vice-versa),
+          without the other campus&rsquo;s consent. A license grant of IP
+          rights beyond the delegated authority violates UC&rsquo;s policies
+          and standing orders, and is considered by UC to be invalid and
+          unenforceable.</p>
+        <p>The specific limited delegated authority granted to UC locations
+          for IP matters means that Berkeley Lab can bind only itself
+          regarding IP licenses, including open source software (&ldquo;OSS&rdquo;)
+          licenses. Some OSS licenses – notably <a
+                  href="https://www.gnu.org/licenses/gpl-3.0.en.html">General
+            Public License version 3</a> and <a
+                  href="https://www.apache.org/licenses/LICENSE-2.0">Apache
+            License version 2.0</a> – contain a patent license requiring each
+          contributor to software licensed under such OSS licenses to provide
+          a royalty-free, irrevocable license to others for any relevant
+          patent claims owned or controlled by the contributor. Such licenses
+          are usually intended to bind the legal entity whose employees are
+          contributing to or publicly distributing the OSS project. Because
+          the legal entity for Berkeley Lab may be considered The Regents,
+          absent the limited delegated authority for patents, the possible
+          effect of Berkeley Lab entering into such patent-granting OSS
+          licenses might be that all relevant patents owned by The Regents
+          (not just those within control of Berkeley Lab) would be encumbered.
+          To this point, The Regents considers such licenses as voidable
+          and/or unenforceable to the extent the license requires a particular
+          campus or unit of The Regents to agree to a covenant beyond the
+          scope of that campus&rsquo;s or unit&rsquo;s delegated authority. In
+          other words, the official with appropriate delegated authority at
+          Berkeley Lab can agree to an &ldquo;open&rdquo; patent license for
+          only any relevant patents within Berkeley Lab&rsquo;s jurisdiction,
+          but not for any other patents owned or controlled by The Regents.
+        </p>
+        <p>It is, therefore, important to involve the appropriate official
+          with delegated authority at Berkeley Lab before entering into OSS
+          licenses for IP owned by The Regents and under the control and
+          jurisdiction of Berkeley Lab. At Berkeley Lab, that official is the
+          Chief Technology Transfer Officer, currently Russell Carrington who
+          leads the <a href="http://ipo.lbl.gov/">Intellectual Property
+            Office</a> (IPO). Any IP created at Berkeley Lab or by Berkeley
+          Lab employees is likely owned by The Regents and must be formally
+          reported to IPO before&nbsp;the technology is distributed or
+          licensed to anyone outside of Berkeley Lab, even if it is to be
+          distributed for free or via an OSS license. Among other things, the
+          purposes of such reporting are to ensure that, prior to
+          distribution: (1) Berkeley Lab has the appropriate rights and
+          authority to license or otherwise distribute the software; (2) the
+          OSS license is appropriate for the software and its contemplated
+          distribution; and (3) Berkeley Lab is in compliance with its DOE
+          requirements. </p>
+        <p>For questions about this notice, please contact Berkeley Lab's
+          IPO: <a href="mailto:ipo@lbl.gov">ipo@lbl.gov</a>.
+        </p>
+        <p></p>
+        <p> *Similarly situated systems include all systems in the lbl.gov,
+          nersc.gov, es.net, jgi.doe.gov, lbnl.us, and berkeleylab.org domain
+          spaces and in those accompanying IP spaces.&nbsp;&nbsp;This policy
+          also applies to LBL owned assets whether or not they are on LBL
+          networks. </p>
+      </div>
+    </div>
+  </div>
+  </div>
+  <style>
+    iframe {
+      position: relative;
+      background: transparent;
+      margin: 0;
+    {#margin-top: -16px;#} height: 120%;
+      width: 120%;
+      overflow-x: hidden;
+      overflow-y: hidden;
+      z-index: 1;
+      -ms-zoom: 0.85;
+      -moz-transform: scale(0.85);
+      -moz-transform-origin: 0 0;
+      -o-transform: scale(0.85);
+      -o-transform-origin: 0 0;
+      -webkit-transform: scale(0.85);
+      -webkit-transform-origin: 0 0;
+    }
+  </style>
+  <script>
+    $(document).ready(() => {
+      let url = location.href.replace(/\/$/, "");
+
+      if (location.hash) {
+        const hash = url.split("#");
+        $('#pills-tab a[href="#' + hash[1] + '"]').tab("show");
+        url = location.href.replace(/\/#/, "#");
+        history.replaceState(null, null, url);
+        setTimeout(() => {
+          $(window).scrollTop(0);
+        }, 400);
+      }
+
+      $('a[data-toggle="pill"]').on("click", function () {
+        let newUrl;
+        const hash = $(this).attr("href");
+        if (hash == "#home") {
+          newUrl = url.split("#")[0];
+        } else {
+          newUrl = url.split("#")[0] + hash;
+        }
+        newUrl += "/";
+        history.replaceState(null, null, newUrl);
+      });
+    });
+  </script>
+{% endblock %}

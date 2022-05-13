@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+  <div class="d-flex align-items-center justify-content-center"
+       style="margin-top: 10%;">
+    <div class="card" style="width: 27rem;">
+      <div class="card-header text-center" style="font-size:16px">
+        Inactive Account
+      </div>
+      <div class="card-body">
+        <p>
+          A confirmation email has been sent to
+          the address you provided.
+          Please follow the instructions to
+          verify your email.
+          A site administrator will then review
+          your account and notify you once it has been
+          approved.
+          This usually takes less than 24 hours.
+        </p>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
+

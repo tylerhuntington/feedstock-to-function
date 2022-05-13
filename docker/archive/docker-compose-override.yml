@@ -1,0 +1,52 @@
+###
+# docker-compose file for lead.jbei.org production site using JBEI nginx Docker image.
+###
+
+version: "3.6"
+volumes:
+  # The tlsdata definition here is used by the nginx and letsencrypt services later in file
+  nginx_certs: {}
+  nginx_confd: {}
+  nginx_vhost: {}
+  nginx_webroot: {}
+
+services:
+  web:
+    environment:
+      VIRTUAL_HOST: "lead.jbei.org"
+      # the below should be whichever port the LEAD container is EXPOSE-ing
+      VIRTUAL_PORT: "8000"
+      LETSENCRYPT_HOST: "lead.jbei.org"
+      LETSENCRYPT_EMAIL: "jbei-informatics@lbl.gov"
+  nginx:
+    image: jbei/nginx:mainline
+    restart: always
+    labels:
+      - com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy=true
+    volumes:
+      - nginx_confd:/etc/nginx/conf.d
+      - nginx_vhost:/etc/nginx/vhost.d
+      - nginx_webroot:/usr/share/nginx/html
+      - nginx_certs:/etc/nginx/certs:ro
+    ports:
+      - '80:80'
+      - '443:443'
+  nginx-gen:
+    image: jbei/nginx-gen:latest
+    restart: always
+    labels:
+      - com.github.jrcs.letsencrypt_nginx_proxy_companion.docker_gen=true
+    volumes:
+      - nginx_confd:/etc/nginx/conf.d
+      - nginx_vhost:/etc/nginx/vhost.d
+      - nginx_webroot:/usr/share/nginx/html
+      - nginx_certs:/etc/nginx/certs:ro
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+  letsencrypt:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    volumes:
+      - nginx_confd:/etc/nginx/conf.d
+      - nginx_vhost:/etc/nginx/vhost.d
+      - nginx_webroot:/usr/share/nginx/html
+      - nginx_certs:/etc/nginx/certs:rw
+      - /var/run/docker.sock:/var/run/docker.sock:ro

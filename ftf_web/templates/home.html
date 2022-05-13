@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+  <div id="carouselExampleIndicators" class="carousel slide"
+       data-ride="carousel" data-interval="8000">
+    <ol class="carousel-indicators">
+      <li data-target="#carouselExampleIndicators" data-slide-to="0"
+          class="active"></li>
+      <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+      <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+    </ol>
+    <div class="carousel-inner"
+         style="padding-left: 20px; padding-right: 20px"
+    >
+      <div class="carousel-item active">
+        {#              <img class="d-block w-100" src="{% static 'img/sucrose_molecule.svg' %}" alt="First slide">#}
+        <div class="jumbotron d-block w-100 dark"
+             style="padding-top: 20px; padding-bottom: 20px; height: 450px">
+          <div class="container">
+            {#              <div class="col">#}
+            <h1 class="display-4 mt-0">Our Mission</h1>
+            <hr class="my-1">
+            <p class="light" style="font-size: 18px">
+              The Feedstock to Function Tool harnesses the
+              power of machine learning to predict properties of
+              high-potential
+              molecules derived from biomass and evaluates the cost,
+              benefits,
+              and risk of promising biobased molecules or biofuels to enable
+              faster, less expensive bioprocess optimization and scale-up.
+            </p>
+            <img src="{% static 'img/sucrose_molecule.svg' %}" height="210"
+                 style="margin-left: 400px; margin-top:0px"
+            >
+          </div>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <div class="jumbotron d-block w-100 dark"
+             style="padding-top: 20px; padding-bottom: 20px; height: 450px">
+          <div class="container">
+            <h3 class="display-4">Molecule Explorer</h3>
+            <hr class="my-4">
+            <div class="row">
+
+              <div class="col">
+                <p class="light" style="margin-top: 50px; font-size: 20px">
+                  Search for molecules in our database and explore their
+                  experimental and predicted properties.
+                </p>
+                <span>
+              <a class="btn btn-primary btn-lg mt-5"
+                 href="{% url 'chem:search' %}"
+                 role="button">
+                Launch
+              </a>
+            </span>
+              </div>
+              <div class="col">
+                <img src="{% static 'img/molec_explorer.png' %}" height="300">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <div class="jumbotron d-block w-100 dark"
+             style="padding-top: 20px; padding-bottom: 20px; height: 450px">
+          <div class="container">
+            <h3 class="display-4">Predict Costs & Emissions</h3>
+            <hr class="my-4">
+            <div class="row">
+              <div class="col">
+                <p class="light" style="margin-top: 50px; font-size: 20px">
+                  Analyze life-cycle costs and greenhouse gas
+                  emissions of bio-produced molecules.
+                </p>
+                <span>
+              <a class="btn btn-primary btn-lg mt-5"
+                 href="{% url 'tea_lca:tea_lca_tool' %}"
+                 role="button">
+                Launch
+              </a>
+            </span>
+              </div>
+              <div class="col">
+                <img src="{% static 'img/tea_lca_tool.png' %}" height="300">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a class="carousel-control-prev" href="#carouselExampleIndicators"
+     role="button" data-slide="prev"
+    style="margin-bottom: 150px; margin-top: 250px; height:100px">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a class="carousel-control-next" href="#carouselExampleIndicators"
+     role="button" data-slide="next"
+     style="margin-bottom: 150px; margin-top: 250px; height:100px">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="sr-only">Next</span>
+  </a>
+  </div>
+
+  <style>
+    /* Add an extra .carousel parent class to increase specificity
+     avoiding the use of !important flag. */
+    .carousel .carousel-indicators li {
+      background-color: #fff;
+      background-color: rgba(70, 70, 70, 0.25);
+    }
+
+    .carousel .carousel-indicators .active {
+      background-color: #444;
+    }
+
+    .carousel-control-prev-icon,
+    .carousel-control-next-icon {
+      height: 85px;
+      width: 85px;
+      outline: black;
+      {#background-size: 100%, 100%;#}
+      border-radius: 50%;
+      border: 0px solid gray;
+      background-image: none;
+    }
+
+    .carousel-control-next-icon:after {
+      content: '>';
+      font-size: 50px;
+      color: #007bff;
+    }
+
+    .carousel-control-prev-icon:after {
+      content: '<';
+      font-size: 50px;
+      color: #007bff;
+    }
+  </style>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+    <div class="d-flex align-items-center justify-content-center"
+         style="margin-top: 10%;">
+        <div class="card" style="width: 27rem;">
+            <div class="card-header" style="font-size:16px">
+                Error!
+            </div>
+            <div class="card-body">
+                <p>
+                    Invalid token. This confirmation link has expired.
+                    has expired. Please click
+                    <a href="{% url 'accounts:resend_token' uidb64 %}">
+                        here
+                    </a>
+                    to generate a new one.
+                </p>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+

@@ -1,0 +1,20 @@
+{% autoescape off %}
+
+  A account for the Feedstock to Function Tool has been requested by
+  a user with the following information:
+  First Name: {{ user.first_name }}
+  Last Name: {{ user.last_name }}
+  E-mail: {{ user.email}}
+  Affiliation: {{ user.affiliation}}
+  Field of Work: {{ user.field_of_work}}
+
+  To approve this account, click on the following link:
+  {{ "http://"|add:domain|add:"/accounts/activate/"|add:uid|add:"/"|add:token|add:"/" }}
+
+  Once confirmed, the site administrator will review your account and
+  notify you once approved. This normally takes less than 24 hours.
+
+  ---
+  The Feedstock to Function Team
+  feedstock-to-function.lbl.gov
+{% endautoescape %}

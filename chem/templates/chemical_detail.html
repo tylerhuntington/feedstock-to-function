@@ -1,0 +1,224 @@
+{% extends 'search.html' %}
+{% load static %}
+{% block search_results %}
+  <div class="card my-1" style="width:100%; display: inline-block;">
+    <div class="card-header text-center">
+      <h5>Chemical Details</h5>
+    </div>
+    <div class="container">
+      <table class="table table" width="100%">
+        <tbody id="tablebody">
+        <tr>
+          <th>Structure</th>
+          <td>
+            {#            <div class="mb-0" style="margin-right: 380px; float: right;">#}
+            <div class="mb-0" style="margin-right: 40%; float: right">
+              {% if jmol_struct %}
+                {% with base_url="https://chemapps.stolaf.edu/jmol/jmol.php?model=" %}
+                  <script
+                          type="text/javascript"
+                          src="{{ base_url|add:chem.smiles|add:'&inline&height=300' }}"
+                  >
+                  </script>
+                {% endwith %}
+              {% else %}
+                {#              <h5>No Structure Available</h5>#}
+                <img src="{% static 'chem/img/structs/'|add:struct_img %}"
+                     width="250px" height="250px"/>
+              {% endif %}
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <th>SMILES ID</th>
+          <td width="100%"> {{ chem.smiles }} </td>
+        </tr>
+        {% if chem.synonyms %}
+          <tr>
+            <th> Molecular Name(s)</th>
+            <td>
+              {% for synonym in chem.syns_list %}
+                  {{ synonym }}; <br>
+              {% endfor %}
+            </td>
+          </tr>
+        {% endif %}
+        {% if chem.formula %}
+          <tr>
+            <th> Molecular Formula</th>
+            <td> {{ chem.formula }} </td>
+          </tr>
+        {% endif %}
+        {% if chem.iupac %}
+          <tr>
+            <th>IUPAC Name</th>
+            <td> {{ chem.iupac }} </td>
+          </tr>
+        {% endif %}
+        {% if chem.inchi %}
+          <tr>
+            <th>InChiKey</th>
+            <td>{{ chem.inchi }}</td>
+          </tr>
+        {% endif %}
+        </tbody>
+      </table>
+      <br>
+      <div class="card-footer text-center" style="vertical-align: middle;">
+        <h5 style="vertical-align: middle;">Experimental Properties</h5>
+      </div>
+      <table class="table table-striped table-sm" style="margin-bottom: 10px;">
+        <thead>
+        <tr>
+          <th style="width: 30%">Property</th>
+          <th>Experimental Value</th>
+          <th>Source(s)</th>
+        </tr>
+        </thead>
+        <tbody id="tablebody">
+        {% if chem.bp_exp %}
+          {% with name="Boiling Point" %}
+            {% with err=chem.bp_pred_abs_err exp=chem.bp_exp %}
+              {% with srcs=chem.bp_exp_srcs exp=chem.bp_exp %}
+                {% with estim=chem.bp_estimator %}
+                  {% include "property_detail.html" %}
+                {% endwith %}
+              {% endwith %}
+            {% endwith %}
+          {% endwith %}
+        {% endif %}
+        {% if chem.mp_exp %}
+          {% with name="Melting Point" %}
+            {% with err=chem.mp_pred_abs_err exp=chem.mp_exp %}
+              {% with srcs=chem.mp_exp_srcs exp=chem.mp_exp %}
+                {% with estim=chem.mp_estimator %}
+                  {% include "property_detail.html" %}
+                {% endwith %}
+              {% endwith %}
+            {% endwith %}
+          {% endwith %}
+        {% endif %}
+        {% if chem.fp_exp %}
+          {% with name="Flash Point" %}
+            {% with err=chem.fp_pred_abs_err exp=chem.fp_exp %}
+              {% with srcs=chem.fp_exp_srcs exp=chem.fp_exp %}
+                {% with estim=chem.fp_estimator %}
+                  {% include "property_detail.html" %}
+                {% endwith %}
+              {% endwith %}
+            {% endwith %}
+          {% endwith %}
+        {% endif %}
+        {% if chem.hoc_exp %}
+          {% with name="Heat of Combustion" %}
+              {% with srcs=chem.hoc_exp_srcs exp=chem.hoc_exp %}
+                  {% include "property_detail.html" %}
+            {% endwith %}
+          {% endwith %}
+        {% endif %}
+        {% if chem.ysi_exp %}
+          {% with name="Yield Sooting Index" %}
+            {% with err=chem.ysi_pred_abs_err exp=chem.ysi_exp %}
+              {% with srcs=chem.ysi_exp_srcs exp=chem.ysi_exp %}
+                {% with estim=chem.ysi_estimator %}
+                  {% include "property_detail.html" %}
+                {% endwith %}
+              {% endwith %}
+            {% endwith %}
+          {% endwith %}
+        {% endif %}
+        </tbody>
+      </table>
+      <div style="height: 50px;"></div>
+      <div class="card-footer text-center" style="vertical-align: middle;">
+        <h5 style="vertical-align: middle;">Predicted Properties</h5>
+      </div>
+      <table class="table table-striped table-sm" style="margin-bottom: 10px;">
+        <thead>
+        <tr>
+          <th style="width: 30%">Property</th>
+          <th>Predicted Value*</th>
+          <th>Lower Error Bound*</th>
+          <th>Upper Error Bound*</th>
+        </tr>
+        </thead>
+        <tbody id="tablebody">
+        {% if chem.bp_pred %}
+          {% with name="Boiling Point" pred=chem.bp_pred %}
+            {% with pred_err_low=chem.bp_pred_err_low %}
+              {% with pred_err_up=chem.bp_pred_err_up %}
+                {% include "property_detail.html" %}
+              {% endwith %}
+            {% endwith %}
+          {% endwith %}
+        {% endif %}
+        {% if chem.mp_pred %}
+          {% with name="Melting Point" pred=chem.mp_pred %}
+            {% with pred_err_low=chem.mp_pred_err_low %}
+              {% with pred_err_up=chem.mp_pred_err_up %}
+                {% include "property_detail.html" %}
+              {% endwith %}
+            {% endwith %}
+          {% endwith %}
+        {% endif %}
+        {% if chem.fp_pred %}
+          {% with name="Flash Point" pred=chem.fp_pred %}
+            {% with pred_err_low=chem.fp_pred_err_low %}
+              {% with pred_err_up=chem.fp_pred_err_up %}
+                {% include "property_detail.html" %}
+              {% endwith %}
+            {% endwith %}
+          {% endwith %}
+        {% endif %}
+        {% if chem.hoc_pred %}
+          {% with name="Heat of Combustion" pred=chem.hoc_pred %}
+            {% with pred_err_low=chem.hoc_pred_err_low %}
+              {% with pred_err_up=chem.hoc_pred_err_up %}
+                {% include "property_detail.html" %}
+              {% endwith %}
+            {% endwith %}
+          {% endwith %}
+        {% endif %}
+        {% if chem.ysi_pred %}
+          {% with name="Yield Sooting Index" pred=chem.ysi_pred %}
+            {% with pred_err_low=chem.ysi_pred_err_low %}
+              {% with pred_err_up=chem.ysi_pred_err_up %}
+                {% include "property_detail.html" %}
+              {% endwith %}
+            {% endwith %}
+          {% endwith %}
+        {% endif %}
+        </tbody>
+      </table>
+{#      <div>#}
+{#        <small>#}
+{##}
+{#        Portions of these results used high performance computing resources#}
+{#        located at the Oak Ridge National Laboratory and provided by the#}
+{#        Bioenergy Technologies Office of the U.S. Department of Energy.#}
+{#        </small>#}
+{#      </div>#}
+      <div style="color:#f5411d">
+        <small>
+
+        *Predicted values and error bounds
+        should be interpreted with caution, as algorithms
+        are still under development.
+        </small>
+      </div>
+    </div>
+    <div class="text-center" style="margin: 50px">
+      {% if chem.tea_lca_tool_alias %}
+        <a href="{% url 'tea_lca:analyze' chem.tea_lca_tool_alias %}"
+           class="btn btn-primary mr-3">
+          Predict Life-cycle Costs & Emissions
+        </a>
+      {% endif %}
+      <a href="{% url 'chem:download' chem.pk %}"
+         class="btn btn-success">
+        Download Data as CSV
+      </a>
+    </div>
+  </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+  {% if chem %}
+    {% with base_url='https://lead.jbei.org/tea_lca_tool/from_ftf?end_prod=' %}
+      <iframe src="{{ base_url|add:chem|lower }}"
+              frameborder="0"
+      >
+    {% endwith %}
+  </iframe>
+  {% else %}
+    <iframe src="https://lead.jbei.org/tea_lca_tool/f2f_landing"
+            frameborder="0"
+    >
+    </iframe>
+  {% endif %}
+  <style>
+    iframe {
+      position: relative;
+      background: transparent;
+      margin: 0;
+    {#margin-top: -16px;#} height: 120%;
+      width: 115%;
+      overflow-x: hidden;
+      z-index: 1;
+      -ms-zoom: 0.85;
+      -moz-transform: scale(0.85);
+      -moz-transform-origin: 0 0;
+      -o-transform: scale(0.85);
+      -o-transform-origin: 0 0;
+      -webkit-transform: scale(0.85);
+      -webkit-transform-origin: 0 0;
+    }
+  </style>
+{% endblock %}

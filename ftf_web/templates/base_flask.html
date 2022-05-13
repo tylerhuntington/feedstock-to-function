@@ -1,0 +1,122 @@
+{% block head %}
+{#  <link rel="shortcut icon" href="{{ url_for('static', filename='images/f2f_logo2cropped.png') }}">#}
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-161701269-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-161701269-1');
+  </script>
+{% endblock %}
+
+{% block styles %}
+{#  <link href="{{url_for('static', filename='css/template.css')}}" rel="stylesheet"> <!-- on local computer use .static -->#}
+  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block title %}
+  Feedstock To Function
+{% endblock %}
+
+<body>
+<div class="content-wrapper">
+  {% block navbar %}
+    <div class="myheader">
+      <nav class="navbar navbar-inverse navbar-static-top">
+        <div class="container d-flex h-100">
+          <div class="row justify-content-center align-self-center">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar3">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="/">
+                <img id='nav-image' src="{{ url_for('static', filename = 'images/f2f_logo.png') }}">
+              </a>
+            </div>
+            <div id="navbar3" class="navbar-collapse collapse ">
+              <ul class="nav navbar-nav navbar-right" id="nav5">
+                <li><a href="{{ url_for('exploredatabase') }}"><span class="navtext"> Neat Property Database</span></a></li>
+                <li><a href="{{ url_for('predictcost') }}"><span class="navtext">Predict Cost and GHG Footprint</span></a></li>
+                <li><a href="{{ url_for('aboutus') }}"><span class="navtext">About</span></a></li>
+              </ul>
+            </div>
+          </div>
+          <!--/.nav-collapse -->
+        </div>
+        <!--/.container-fluid -->
+      </nav>
+
+    </div>
+  {% endblock %}
+
+  {% block content %}
+
+    <div class="mycontainer">
+      {# application content needs to be provided in the app_content block #}
+      {% block app_content %}{% endblock %}
+
+    </div>
+
+    {% block footer %}
+      <!-- Join Our Team -->
+      <div class="container extra-wide cut-off">
+        <div class="row">
+          <div class="col-sm-12">
+            <footer class="footer">
+              <div class="container">
+                <div class="row text-center">
+                  <div class="col-sm-2">
+                    <div class="footer-pad">
+                      <a href="https://niemeyer-research-group.github.io/" >
+{#                        <img src="{{ url_for('static', filename = 'images/osu.png') }}">#}
+                      </a>
+                    </div>
+                  </div>
+                  <div class="col-sm-2">
+                    <div class="footer-pad">
+                      <a href="https://www.lbl.gov/" >
+{#                        <img src="{{ url_for('static', filename = 'images/berkeley.png') }}">#}
+                      </a>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                  </div>
+                  <div class="col-md-4" id="footer-here">
+                    <div class="footer-social-links">
+                      <a href="#">
+                        <i class="icoFacebook" title="Facebook"><i class="fa fa-facebook"></i></i>
+                      </a>
+                      <a href="#">
+                        <i class="icoInstagram" title="Instagram"><i class="fa fa-instagram"></i></i>
+                      </a>
+                      <a href="#">
+                        <i class="icoTwitter" title="Twitter"><i class="fa fa-twitter"></i></i>
+                      </a>
+                      <a href="#">
+                        <i class="icoLinkedin" title="Linkedin"><i class="fa fa-linkedin"></i></i>
+                      </a>
+                      <a href="#">
+                        <i class="icoYouTube" title="YouTube"><i class="fa fa-youtube"></i></i>
+                      </a>
+                      </li>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </footer>
+            <div class="footer-bottom">
+              Copyright © 2020, All Rights Reserved
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endblock %}
+
+  {% endblock %}
+</div>
+</body>

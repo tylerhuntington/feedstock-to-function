@@ -1,0 +1,294 @@
+{% extends 'base.html' %}
+{% block content %}
+  <style type="text/css" rel="stylesheet">
+    td {
+      vertical-align: middle !important;
+    }
+  </style>
+  <script>
+    var rowNumber = 2;
+    $(document).ready(function () {
+      $("#addcomponentsbutton").click(function () {
+        if (rowNumber <= 6) {
+          $("#blendtable").append("<tr>\n" +
+            "<td class=\"align-middle\"> Component Name " + rowNumber +
+            ": </td> " +
+            " <td> <input class='form-control form-control-sm' name=comp_" +
+            rowNumber + "_name" + "</td>" +
+            "<td class=\"align-middle text-right\"> Component Percentage " +
+            rowNumber + ": </td> " +
+            " <td> <input class='form-control form-control-sm' name=comp_" +
+            rowNumber + "_perc" + "</td>" +
+            " </tr>"
+          )
+          rowNumber++;
+        }
+      });
+    });
+  </script>
+  <div class="container">
+    <div class="properties-container">
+      <form method=post enctype=multipart/form-data>
+        {% csrf_token %}
+        <table class="table table-striped table-sm">
+          <h3>Option 1: Add New Blend Using Form</h3>
+          <thead>
+          <tr>
+            <th> Blend Summary</th>
+            <th></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td> Blend Name</td>
+            <td>
+              {{ form.name }} </td>
+          </tr>
+          <tr>
+            <td> CAS Number</td>
+            <td> {{ form.cas }} </td>
+          </tr>
+          </tbody>
+        </table>
+
+        <table class="table table-striped table-sm">
+          <thead>
+          <tr>
+            <th> Blend Components</th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+          </tr>
+          </thead>
+          <tbody id="blendtable">
+          <tr>
+            <td class="align-middle"> Component Name 1:</td>
+            <td class="align-middle">{{ form.comp_1_name }} </td>
+            <td class="align-middle text-right"> Component Percentage 1:</td>
+            <td class="align-middle">
+              {{ form.comp_1_perc }} </td>
+            <td class="align-middle text-right">
+              <button type='button' class="btn btn-primary btn-sm"
+                      id="addcomponentsbutton">
+                Add Another Component
+              </button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+
+        <table class="table table-striped table-sm">
+          <thead>
+          <tr>
+            <th> Property</th>
+            <th> Value</th>
+            <th> Source</th>
+            <th> Test</th>
+            <th> Notes</th>
+          </tr>
+          </thead>
+          <tbody id="tablebody">
+          <tr>
+            <td> Initial Boiling Point (0%)</td>
+            <td>{{ form.bp_exp_0 }} </td>
+            <td>{{ form.bp_src_0 }} </td>
+            <td>{{ form.bp_tst_0 }} </td>
+            <td>{{ form.bp_notes_0 }} </td>
+          </tr>
+          <tr>
+            <td> Boiling Point at 10%</td>
+            <td>{{ form.bp_exp_10 }} </td>
+            <td>{{ form.bp_src_10 }} </td>
+            <td>{{ form.bp_tst_10 }} </td>
+            <td>{{ form.bp_notes_10 }} </td>
+          </tr>
+          <tr>
+            <td> Boiling Point at 50%</td>
+            <td>{{ form.bp_exp_50 }} </td>
+            <td>{{ form.bp_src_50 }} </td>
+            <td>{{ form.bp_tst_50 }} </td>
+            <td>{{ form.bp_notes_50 }} </td>
+          </tr>
+          <tr>
+            <td> Boiling Point at 90%</td>
+            <td>{{ form.bp_exp_90 }} </td>
+            <td>{{ form.bp_src_90 }} </td>
+            <td>{{ form.bp_tst_90 }} </td>
+            <td>{{ form.bp_notes_90 }} </td>
+          </tr>
+          <tr>
+            <td> Final Boiling Point (100%)</td>
+            <td>{{ form.bp_exp_100 }} </td>
+            <td>{{ form.bp_src_100 }} </td>
+            <td>{{ form.bp_tst_100 }} </td>
+            <td>{{ form.bp_notes_100 }} </td>
+          </tr>
+          <tr>
+            <td> Boiling Point at {{ form.bp_temp_oth }} %</td>
+            <td>{{ form.bp_exp_oth }} </td>
+            <td>{{ form.bp_src_oth }} </td>
+            <td>{{ form.bp_tst_oth }} </td>
+            <td>{{ form.bp_notes_oth }} </td>
+          </tr>
+          <tr>
+            <td> Flash Point</td>
+            <td>{{ form.fp_exp }} </td>
+            <td>{{ form.fp_src }} </td>
+            <td>{{ form.fp_tst }} </td>
+            <td>{{ form.fp_notes }} </td>
+          </tr>
+          <tr>
+            <td> Freezing Point</td>
+            <td>{{ form.frzp_exp }} </td>
+            <td>{{ form.frzp_src }} </td>
+            <td>{{ form.frzp_tst }} </td>
+            <td>{{ form.frzp_notes }} </td>
+          </tr>
+          <tr>
+            <td> Aromatics</td>
+            <td>{{ form.arom_exp }} </td>
+            <td>{{ form.arom_src }} </td>
+            <td>{{ form.arom_tst }} </td>
+            <td>{{ form.arom_notes }} </td>
+          </tr>
+          <tr>
+            <td> Sulfer (% weight)</td>
+            <td>{{ form.slfr_exp }} </td>
+            <td>{{ form.slfr_src }} </td>
+            <td>{{ form.slfr_tst }} </td>
+            <td>{{ form.slfr_notes }} </td>
+          </tr>
+          <tr>
+            <td> Net Heat of Combustion</td>
+            <td>{{ form.net_ht_cmbst_exp }} </td>
+            <td>{{ form.net_ht_cmbst_src }} </td>
+            <td>{{ form.net_ht_cmbst_tst }} </td>
+            <td>{{ form.net_ht_cmbst_notes }} </td>
+          </tr>
+          <tr>
+            <td> Naphthalene (% vol)</td>
+            <td>{{ form.naph_exp }} </td>
+            <td>{{ form.naph_src }} </td>
+            <td>{{ form.naph_tst }} </td>
+            <td>{{ form.naph_notes }} </td>
+          </tr>
+          <tr>
+            <td> Lubricity</td>
+            <td>{{ form.lbrc_exp }} </td>
+            <td>{{ form.lbrc_src }} </td>
+            <td>{{ form.lbrc_tst }} </td>
+            <td>{{ form.lbrc_notes }} </td>
+          </tr>
+          <tr>
+            <td> Density at 15 &#176C (g/m2)</td>
+            <td>{{ form.dens_15_exp }} </td>
+            <td>{{ form.dens_15_src }} </td>
+            <td>{{ form.dens_15_tst }} </td>
+            <td>{{ form.dens_15_notes }} </td>
+          </tr>
+          <tr>
+            <td> Density at {{ form.dens_x_temp }} &#176C (g/m2)</td>
+            <td>{{ form.dens_x_exp }} </td>
+            <td>{{ form.dens_x_src }} </td>
+            <td>{{ form.dens_x_tst }} </td>
+            <td>{{ form.dens_x_notes }} </td>
+          </tr>
+          <tr>
+            <td> Viscosity at -20 &#176C</td>
+            <td>{{ form.visc_n20_exp }} </td>
+            <td>{{ form.visc_n20_src }} </td>
+            <td>{{ form.visc_n20_tst }} </td>
+            <td>{{ form.visc_n20_notes }} </td>
+          </tr>
+          <tr>
+            <td> Viscosity at {{ form.visc_x_temp }} &#176C (g/m2)</td>
+            <td>{{ form.visc_x_exp }} </td>
+            <td>{{ form.visc_x_src }} </td>
+            <td>{{ form.visc_x_tst }} </td>
+            <td>{{ form.visc_x_notes }} </td>
+          </tr>
+          <tr>
+            <th> Other Property Label</th>
+            <th> Value</th>
+            <th> Source</th>
+            <th> Test</th>
+            <th> Notes</th>
+          </tr>
+          <tr>
+            <td>{{ form.oth_prop_1_name }} </td>
+            <td>{{ form.oth_prop_1_exp }} </td>
+            <td>{{ form.oth_prop_1_src }} </td>
+            <td>{{ form.oth_prop_1_tst }} </td>
+            <td>{{ form.oth_prop_1_notes }} </td>
+          </tr>
+          <tr>
+            <td>{{ form.oth_prop_2_name }} </td>
+            <td>{{ form.oth_prop_2_exp }} </td>
+            <td>{{ form.oth_prop_2_src }} </td>
+            <td>{{ form.oth_prop_2_tst }} </td>
+            <td>{{ form.oth_prop_2_notes }} </td>
+          </tr>
+          <tr>
+            <td>{{ form.oth_prop_3_name }} </td>
+            <td>{{ form.oth_prop_3_exp }} </td>
+            <td>{{ form.oth_prop_3_src }} </td>
+            <td>{{ form.oth_prop_3_tst }} </td>
+            <td>{{ form.oth_prop_3_notes }} </td>
+          </tr>
+          </tbody>
+        </table>
+        <hr/>
+
+        <h3 class="space-above">Option 2: Add Blends By Uploading CSV</h3>
+        <p> For entering in multiple blends, you also have the option of
+          completing a CSV. </p>
+        <p> First, download this blank template and complete it. Submission
+          errors
+          will result if the column names are changed or if the blend_name,
+          contributor_name, contact_info, or affiliation fields are left
+          blank. </p>
+
+        <a href="{% url 'chem:download_blend_subm_tmpl' %}">
+          <button type='button' class='btn btn-warning' id="dwnload-subm-tmplate-btn">
+            Download CSV Template
+          </button>
+        </a>
+        <p class="my-3">
+          Then, find the completed file on your computer and upload it.
+        </p>
+        <div>
+          {{ form.csv_submission }}
+        </div>
+        <table class="table table-striped table-sm my-4">
+          <tbody id="tablebody">
+          <tr>
+            <th> Contributor Name</th>
+            <th> Contact Info</th>
+            <th> Affiliation</th>
+          </tr>
+          <tr>
+            <td>
+              {{ form.contrib_name }} </td>
+            <td>
+              {{ form.contrib_email }}  </td>
+            <td>{{ form.contrib_affil }} </td>
+          </tr>
+          </tbody>
+        </table>
+
+        <table class="table table-striped table-sm">
+          <tbody id="tablebody">
+          <tr><b>Comments</b></tr>
+          <tr>
+            {{ form.comments }}
+          </tr>
+          </tbody>
+        </table>
+        <input type=submit class='btn btn-success'>
+
+      </form>
+    </div>
+  </div>
+{% endblock %}

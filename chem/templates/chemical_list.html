@@ -1,0 +1,123 @@
+{% block search_results %}
+  {% if results %}
+    <h3 class="text-center mt-0">Search Results</h3>
+    <table class="table table-striped">
+      <tr>
+        <td colspan="2" class="text-center"
+            style="font-style: italic; color: gray">
+          Chemical Identifiers
+        </td>
+        <td colspan="5" class="text-center"
+            style="font-style: italic; color: gray">
+          Experimental Property Values
+        </td>
+      </tr>
+      <tr>
+        <th>SMILES</th>
+        {% if search_type == 'smiles' or search_type == 'name' %}
+          <th style="white-space: nowrap; width: 20px">
+            Name(s)
+          </th>
+        {% endif %}
+        {% if search_type == 'iupac' %}
+          <th>IUPAC</th>
+        {% endif %}
+        {% if search_type == 'formula' %}
+          <th>Molecular Formula</th>
+        {% endif %}
+        {% if search_type == 'inchi' %}
+          <th>InChIKey</th>
+        {% endif %}
+        <th class="text-center">Melting <br> Point (°C)</th>
+        <th class="text-center">Boiling <br> Point (°C)</th>
+        <th class="text-center">Flash <br> Point (°C)</th>
+        <th class="text-center">Yield Sooting <br> Index</th>
+        <th class="text-center">Heat of <br>Combustion (kJ/g)</th>
+      </tr>
+      {% for object in results %}
+        <tr>
+          <td>
+            {#          <td style="white-space: nowrap; width: 5px;">#}
+            {% if object.smiles %}
+              <a href="{% url 'chem:detail' pk=object.pk %}">
+              {% if object.smiles|length > 30 %}
+                <small>
+                  {{ object.smiles|slice:"0:30"|add:'...' }}
+                </small>
+              {% else %}
+                <small>
+                  {{ object.smiles }}
+                </small>
+              {% endif %}
+            {% endif %}
+            </a>
+          </td>
+          {% if search_type == 'name' or search_type == 'smiles' %}
+            {% if object.name %}
+                <td>
+                  <small>{{ object.names_str }}</small>
+                </td>
+          {% else %}
+            <td class="text-center">-</td>
+            {% endif %}
+          {% endif %}
+          {% if search_type == 'iupac' %}
+            {% if object.iupac %}
+              <td>{{ object.iupac }}</td>
+            {% endif %}
+          {% endif %}
+          {% if search_type == 'formula' %}
+            {% if object.formula %}
+              <td>{{ object.formula }}</td>
+            {% endif %}
+          {% endif %}
+          {% if search_type == 'inchi' %}
+            {% if object.inchi %}
+              <td>{{ object.inchi }}</td>
+            {% endif %}
+          {% endif %}
+          {#            {% if 'mp' in filter_props %}#}
+          {% if object.mp_exp and object.mp_exp|floatformat != 'nan' %}
+            <td class="text-center">{{ object.mp_exp|floatformat }}</td>
+          {% else %}
+            <td class="text-center">-</td>
+          {% endif %}
+          {#            {% endif %}#}
+          {#            {% if 'bp' in filter_props %}#}
+          {% if object.bp_exp and object.bp_exp|floatformat != 'nan' %}
+            <td class="text-center">{{ object.bp_exp|floatformat }}</td>
+          {% else %}
+            <td class="text-center">-</td>
+          {% endif %}
+          {% if object.fp_exp and object.fp_exp|floatformat != 'nan' %}
+            <td class="text-center">{{ object.fp_exp|floatformat }}</td>
+          {% else %}
+            <td class="text-center">-</td>
+          {% endif %}
+          {#            {% endif %}#}
+          {#            {% if 'ysi' in filter_props %}#}
+          {% if object.ysi_exp and object.ysi_exp|floatformat != 'nan' %}
+            <td class="text-center">{{ object.ysi_exp|floatformat }}</td>
+          {% else %}
+            <td class="text-center">-</td>
+          {% endif %}
+          {#            {% endif %}#}
+          {#            {% if 'cn' in filter_props %}#}
+          {% if object.hoc_exp and object.hoc_exp|floatformat != 'nan' %}
+            <td class="text-center">{{ object.hoc_exp|floatformat }}</td>
+          {% else %}
+            <td class="text-center">-</td>
+          {% endif %}
+          {#            {% endif %}#}
+        </tr>
+        {#        {% endif %}#}
+      {% endfor %}
+    </table>
+  {% endif %}
+  {% if not results %}
+    <div class="alert alert-danger text-center mt-0">
+      No results matching query.
+      Please try a different search term, search type or set of filters.
+    </div>
+  {% endif %}
+{% endblock %}

@@ -1,0 +1,14 @@
+{% autoescape off %}
+  Hi {{ user.first_name }},
+
+  Thanks for requesting an account for the Feedstock to Function Tool.
+  Please click on the following link to confirm your email address:
+  {{ "http://"|add:domain|add:"/accounts/confirm_email/"|add:uid|add:"/"|add:token|add:"/" }}
+
+  Once confirmed, the site administrator will review your account and
+  notify you when it has been approved. This normally takes less than 24 hours.
+
+  ---
+  The Feedstock to Function Team
+  feedstock-to-function.lbl.gov
+{% endautoescape %}

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+  <div class="d-flex align-items-center justify-content-center"
+       style="margin-top: 10%;">
+    <div class="card" style="width: 27rem;">
+      <div class="card-header text-center" style="font-size:16px">
+        Email Confirmed!
+      </div>
+      <div class="card-body">
+        <p>
+          Thanks for verifying your email address. Your account
+          will be reviewed by a site administrator shortly and we'll
+          notify you once approved. You will then be able to
+          <a href="{% url 'login' %}">log in</a>
+          to access our tools and resources.
+        </p>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+

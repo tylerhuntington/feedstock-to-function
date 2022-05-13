@@ -1,0 +1,93 @@
+{% load mathfilters %}
+{% block content %}
+  <tr>
+    <td> {{ name }} </td>
+    {% if exp %}
+      <td>
+        {% if exp and exp|floatformat != 'nan' %}
+          {{ exp|floatformat }}
+          {% if name in "Boiling Point,Melting Point,Flash Point" %}
+            &#176C
+          {% endif %}
+          {% if name in "Heat of Combustion" %}
+            MJ/kg
+          {% endif %}
+        {% else %}
+        {% endif %}
+      </td>
+    {% endif %}
+    {% if exp %}
+      <td>
+        {% for src in srcs.all %}
+          {% if src != 'nan' and exp|floatformat != 'nan' %}
+            {% if not forloop.last %}
+              <a href="{{ src.link }}" target="_blank">{{ src.name }},</a>
+            {% else %}
+              <a href="{{ src.link }}" target="_blank">{{ src.name }}</a>
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+      </td>
+    {% endif %}
+    {% if pred %}
+      <td>
+      <span style="color: gray; font-style: italic">
+    {% if pred and pred|floatformat != 'nan' %}
+      {{ pred|floatformat }}
+      {% if name in "Boiling Point,Melting Point,Flash Point" %}
+        &#176C
+      {% endif %}
+      {% if name in "Heat of Combustion" %}
+        MJ/kg
+      {% endif %}
+    {% else %}
+    {% endif %}
+      </span>
+      </td>
+      <td>
+      <span style="color: gray; font-style: italic">
+      {% if pred_err_low|floatformat != 'nan' %}
+        {{ pred_err_low|floatformat }}
+        {% if name in "Boiling Point,Melting Point,Flash Point" %}
+          &#176C
+        {% endif %}
+        {% if name in "Heat of Combustion" %}
+          MJ/kg
+        {% endif %}
+      {% else %}
+      {% endif %}
+      </span>
+      </td>
+      <td>
+      <span style="color: gray; font-style: italic">
+      {% if pred_err_low|floatformat != 'nan' %}
+        {{ pred_err_up|floatformat }}
+        {% if name in "Boiling Point,Melting Point,Flash Point" %}
+          &#176C
+        {% endif %}
+        {% if name in "Heat of Combustion" %}
+          MJ/kg
+        {% endif %}
+      {% else %}
+      {% endif %}
+      </span>
+      </td>
+    {% endif %}
+
+  </tr>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+          integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+          crossorigin="anonymous"></script>
+  <script>
+    $(document).ready(function () {
+      $('[data-toggle="popover"]').popover({html: true}).on('click',
+        function (e) {
+          e.preventDefault();
+          return true;
+        });
+    });
+    $('.popover-dismiss').popover({
+      trigger: 'focus'
+    })
+  </script>
+{% endblock %}

@@ -1,0 +1,1 @@
+'ABC', 'SpAbs_A', 'SpMax_A', 'nAromBond', 'nAtom', 'nHeavyAtom', 'nH', 'BCUTs-1h', 'BCUTpe-1l', 'BCUTp-1h', 'BCUTp-1l', 'VE2_DzZ', 'SM1_Dzm', 'SM1_Dzv', 'VR3_Dzv'

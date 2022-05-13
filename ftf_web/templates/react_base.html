@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load templatetags %}
+
+{% block content %}
+    <div id="react">
+        <!-- Contents get replaced by mounted React.Component -->
+    </div>
+    <script>
+      // Escape props to prevent XSS
+      // Reference for the source of the json filter:
+      // https://gist.github.com/pirate/c18bfe4fd96008ffa0aef25001a2e88f
+        window.props = {{props|json}};
+        window.react_mount = document.getElementById('react');
+    </script>
+    <!-- TODO: Use static templatetags here instead -->
+    <script src="/static/frontend/{{ component }}"></script>
+{% endblock %}

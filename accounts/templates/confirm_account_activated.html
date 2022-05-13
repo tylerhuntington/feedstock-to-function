@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+    <div class="d-flex align-items-center justify-content-center"
+         style="margin-top: 10%;">
+        <div class="card" style="width: 27rem;">
+            <div class="card-header" style="font-size:16px">
+                Account Activated!
+            </div>
+            <div class="card-body">
+                <p>
+                    The new user can now <a href="{% url 'login' %}">log in</a>
+                    and access our tools and resources.
+                </p>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+

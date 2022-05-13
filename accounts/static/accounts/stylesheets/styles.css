@@ -1,0 +1,15 @@
+/*CSS styles for accounts app*/
+
+#eula-modal-agree-btn {
+    margin-right: 90%;
+}
+
+.top-banner-alert {
+    width: 27rem;
+    margin: 0;
+}
+
+.alert-banner-msg {
+    margin: 0;
+
+}
